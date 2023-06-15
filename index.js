@@ -36,7 +36,12 @@ bot.on('message', (msg) => {
 });
 
 async function start() {
-  const browser = await puppeteer.launch()
+  const browser = await puppeteer.launch({
+    executablePath:
+      process.env.NODE_ENV === "production"
+        ? process.env.PUPPETEER_EXECUTABLE_PATH
+        : puppeteer.executablePath(),
+  })
   const page = await browser.newPage()
   await page.goto('https://www.touch.com.lb/autoforms/portal/touch/onlinereservation', { waitUntil: 'networkidle2', timeout: 0 });
   await Promise.all([
